@@ -95,7 +95,7 @@ void app_main(void) {
     exit(1);
   }
   //Set OP mode of BNO
-  data = 0x7;
+  data = 0xC;
   ESP_ERROR_CHECK(writeDevice(BNO, 0x3D, data));
 
   while(1) {
@@ -105,15 +105,15 @@ void app_main(void) {
     ESP_ERROR_CHECK(readDevice(LSM9DS1_AG, 0x2A, (uint8_t*) &accY, sizeof(accY)));
     ESP_ERROR_CHECK(readDevice(LSM9DS1_AG, 0x2C, (uint8_t*) &accZ, sizeof(accZ)));
     
-    ESP_LOGI(TAG, "LSM Linear Accel X: %d\tY: %d\tZ: %d", accX, accY, accZ);
 
     //Read BNO
-    ESP_ERROR_CHECK(readDevice(BNO, 0x28, (uint8_t*) &accX, sizeof(accX)));
-    ESP_ERROR_CHECK(readDevice(BNO, 0x2A, (uint8_t*) &accY, sizeof(accY)));
-    ESP_ERROR_CHECK(readDevice(BNO, 0x2C, (uint8_t*) &accZ, sizeof(accZ)));
+    int16_t bnoaccX, bnoaccY, bnoaccZ;
+    ESP_ERROR_CHECK(readDevice(BNO, 0x8, (uint8_t*) &bnoaccX, sizeof(bnoaccX)));
+    ESP_ERROR_CHECK(readDevice(BNO, 0xA, (uint8_t*) &bnoaccY, sizeof(bnoaccY)));
+    ESP_ERROR_CHECK(readDevice(BNO, 0xC, (uint8_t*) &bnoaccZ, sizeof(bnoaccZ)));
     
-    ESP_LOGI(TAG, "BNO Linear Accel X: %d\tY: %d\tZ: %d", accX, accY, accZ);
+    ESP_LOGI(TAG, "BNO Accel X: %d\tY: %d\tZ: %d" "\tLSM Accel X: %d\tY: %d\tZ: %d", bnoaccX, bnoaccY, bnoaccZ, accX, accY, accZ);
 
-    vTaskDelay(200 / portTICK_PERIOD_MS);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
   }
 }
