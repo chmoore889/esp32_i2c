@@ -3,8 +3,8 @@
 #include "esp_log.h"
 #include "driver/i2c.h"
 
-#define I2C_MASTER_SCL_IO           9
-#define I2C_MASTER_SDA_IO           8
+#define I2C_MASTER_SCL_IO           22
+#define I2C_MASTER_SDA_IO           23
 #define I2C_MASTER_NUM              0
 #define I2C_MASTER_FREQ_HZ          400000
 #define I2C_MASTER_TX_BUF_DISABLE   0
@@ -107,7 +107,7 @@ void app_main(void) {
     
 
     //Read BNO
-    int16_t bnoaccX, bnoaccY, bnoaccZ;
+    int16_t bnoaccX = 0, bnoaccY = 0, bnoaccZ = 0;
     ESP_ERROR_CHECK(readDevice(BNO, 0x8, (uint8_t*) &bnoaccX, sizeof(bnoaccX)));
     ESP_ERROR_CHECK(readDevice(BNO, 0xA, (uint8_t*) &bnoaccY, sizeof(bnoaccY)));
     ESP_ERROR_CHECK(readDevice(BNO, 0xC, (uint8_t*) &bnoaccZ, sizeof(bnoaccZ)));
